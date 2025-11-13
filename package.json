@@ -26,25 +26,27 @@
         "serve-win": "open-cli http://localhost:8080 && main",
         "docker": "docker build . -t svelte-ts-go -f Dockerfile",
         "docker-run": "open-cli http://localhost:8080 && docker run -p 8080:8080 --rm svelte-ts-go",
-        "commit": "git pull origin main && git add . && git commit -m \"Updating\" && git push origin main"
+        "commit": "git pull origin main && git add . && git commit -m \"Updating\" && git push origin main",
+        "dev-server": "go run ."
     },
     "devDependencies": {
-        "@sveltejs/adapter-static": "^3.0.9",
-        "@sveltejs/kit": "^2.42.2",
-        "@sveltejs/vite-plugin-svelte": "^6.2.0",
-        "globals": "^16.4.0",
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.48.4",
+        "@sveltejs/vite-plugin-svelte": "^6.2.1",
+        "globals": "^16.5.0",
         "open-cli": "^8.0.0",
-        "svelte": "^5.39.4",
-        "svelte-check": "^4.3.1",
+        "svelte": "^5.43.6",
+        "svelte-check": "^4.3.4",
         "svelte-preprocess": "^6.0.3",
-        "typescript": "^5.9.2",
-        "vite": "^7.1.6",
+        "typescript": "^5.9.3",
+        "vite": "^7.2.2",
         "yarn-upgrade-all": "^0.7.5"
     },
     "type": "module",
     "dependencies": {
         "@fontsource/open-sans": "^5.2.7",
-        "bootstrap": "^5.3.8"
+        "bootstrap": "^5.3.8",
+        "picomatch": "^4.0.2"
     },
     "resolutions": {
         "picomatch": "^4.0.2"

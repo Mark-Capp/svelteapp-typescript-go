@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
@@ -29,6 +30,8 @@ func Server() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	service := Service{}
+
+	router.Use(cors.Default()) // All origins allowed by default
 
 	// apis
 	api := router.Group("/api")

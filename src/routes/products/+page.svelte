@@ -18,6 +18,7 @@
     "All",
     ...new Set(products.map((p) => p.category)),
   ]);
+  
   let filteredProducts = $derived(
     products.filter(
       (p) => selectedCategory === "All" || selectedCategory === p.category

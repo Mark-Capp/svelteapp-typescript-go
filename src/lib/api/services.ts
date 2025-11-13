@@ -4,12 +4,11 @@ import { dev } from '$app/environment';
 import mockProducts from '$lib/data/mockData.json';
 
 const api = {
-    loadProductsPath: '/api/products',
-    storeOrderPath: '/api/orders'
+    loadProductsPath: 'http://127.0.0.1:8080/api/products',
+    storeOrderPath: 'http://127.0.0.1:8080/api/orders'
 };
 
 export const loadProducts = async (): Promise<Product[]> => {
-    if (dev) return mockProducts;
 
     try {
         return await (await fetch(api.loadProductsPath)).json();
@@ -19,7 +18,6 @@ export const loadProducts = async (): Promise<Product[]> => {
 };
 
 export const storeOrder = async (order: Order): Promise<Result> => {
-    if (dev) return { id: 42 };
 
     const orderData: OrderData = {
         lines: [...order.orderLines.currents()].map((ol) => ({
