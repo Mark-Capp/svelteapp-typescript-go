@@ -6,6 +6,15 @@ export interface Product {
 	price: number;
 }
 
+export interface Film {
+	id: number;
+	title: string;
+	year: number;
+	genre: string;
+	director: string;
+	synopsis: string;
+}
+
 export interface OrderData {
 	lines: {
 		productId: number;

@@ -148,6 +148,17 @@ func (s *Service) OrderService(c *gin.Context) {
 	}
 
 	// return the new order id
-	result := Result{ Id: newId }
+	result := Result{Id: newId}
 	c.JSON(http.StatusCreated, result)
+}
+
+func (s *Service) FilmService(c *gin.Context) {
+	c.JSON(http.StatusOK, films)
+}
+
+var films = []Film{
+	{Id: 1, Title: "The Shawshank Redemption", Year: 1994, Genre: "Drama", Director: "Frank Darabont", Synopsis: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."},
+	{Id: 2, Title: "The Godfather", Year: 1972, Genre: "Crime", Director: "Francis Ford Coppola", Synopsis: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son."},
+	{Id: 3, Title: "The Dark Knight", Year: 2008, Genre: "Action", Director: "Christopher Nolan", Synopsis: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice."},
+	{Id: 4, Title: "Pulp Fiction", Year: 1994, Genre: "Crime", Director: "Quentin Tarantino", Synopsis: "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption."},
 }

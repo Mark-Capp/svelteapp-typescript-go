@@ -3,7 +3,9 @@ import { loadProducts } from '$lib/api/services';
 
 export const load: PageLoad = async () => {
     // load product data from backend service before mounting Product component
-    return {
+    var data= {
         products: await loadProducts()
     };
+    console.log(data);
+    return data;
 };

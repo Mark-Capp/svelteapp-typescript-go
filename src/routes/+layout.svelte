@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-  <title>Sports Store Demo App</title>
+  <title>Films to watch</title>
 </svelte:head>
 
 <svelte:boundary>

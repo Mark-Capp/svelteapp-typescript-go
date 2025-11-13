@@ -25,3 +25,12 @@ type Line struct {
 type Result struct {
 	Id int `json:"id"`
 }
+
+type Film struct {
+	Id       int    `json:"id"`
+	Title    string `json:"title"`
+	Year     int    `json:"year"`
+	Genre    string `json:"genre"`
+	Director string `json:"director"`
+	Synopsis string `json:"synopsis"`
+}

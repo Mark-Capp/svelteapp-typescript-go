@@ -37,6 +37,7 @@ func Server() {
 	api := router.Group("/api")
 	api.GET("/products", service.ProductService) // api: /api/products
 	api.POST("/orders", service.OrderService)    // api: /api/orders
+	api.GET("/films", service.FilmService)       // api: /api/films
 
 	// serve static files
 	router.Use(static.Serve("/", static.LocalFile("./build", true)))
