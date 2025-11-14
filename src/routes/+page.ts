@@ -1,4 +1,6 @@
-import { redirect } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import { getItems } from "$lib/api/services";
 
-export const load: PageLoad = async () => redirect(301, '/products');
+export const load = async() => {
+    const items = await getItems();
+    return { items };
+}

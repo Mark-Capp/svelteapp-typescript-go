@@ -1,49 +1,30 @@
-import type { Product, OrderData, Order, Result, Film } from '../type/entities';
+import type { Item } from "$lib/type/entities";
+
 const apiBase = "http://127.0.0.1:8080/api";
 
 const api = {
-    productsPath: `${apiBase}/products`,
-    orderPath: `${apiBase}/orders`,
-    filmsPath: `${apiBase}/films`
+    itemsPath: `${apiBase}/items`
 };
 
-export const loadProducts = async (): Promise<Product[]> => {
+export const addItem = async (itemName: string): Promise<void> => {
     try {
-        return await (await fetch(api.productsPath)).json();
+        await fetch(api.itemsPath, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({ name: itemName })
+        });    
     } catch {
-        return [];
+        console.error("Failed to add item");
     }
 };
 
-export const loadFilms = async (): Promise<Film[]> => {
+export const getItems = async (): Promise<Item[]> => {
     try {
-        return await (await fetch(api.filmsPath)).json();
+        return await (await fetch(api.itemsPath)).json();
     } catch {
-        return [];
+        return []
     }
 };
 
-export const storeOrder = async (order: Order): Promise<Result> => {
-    const orderData: OrderData = {
-        lines: [...order.orderLines].map((ol) => ({
-            productId: ol.product.id,
-            productName: ol.product.name,
-            quantity: ol.quantity
-        }))
-    };
-
-    try {
-        const result: Result = await (
-            await fetch(api.orderPath, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json; charset=UTF-8'
-                },
-                body: JSON.stringify(orderData)
-            })
-        ).json();
-        return result;
-    } catch {
-        return { id: -1 };
-    }
-};

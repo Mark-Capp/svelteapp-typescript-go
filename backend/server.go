@@ -1,20 +1,18 @@
 package backend
 
 import (
-	"context"
 	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 // Server is the main program
@@ -26,18 +24,28 @@ func Server() {
 	docker := flag.Bool("docker", false, "Running in docker")
 	flag.Parse()
 
+	db, err := gorm.Open(sqlite.Open("./data/database.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	// Migrate the schema
+	db.AutoMigrate(&ListItem{})
+	db.AutoMigrate(&Tag{})
+	db.AutoMigrate(&ListItemFact{})
+
 	// prepare service, http handler and server
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	service := Service{}
 
 	router.Use(cors.Default()) // All origins allowed by default
 
 	// apis
 	api := router.Group("/api")
-	api.GET("/products", service.ProductService) // api: /api/products
-	api.POST("/orders", service.OrderService)    // api: /api/orders
-	api.GET("/films", service.FilmService)       // api: /api/films
+	api.GET("/items", ListItems(db))
+	api.POST("/items", AddItem(db))
+
+	api.GET("/tags", Tags)
 
 	// serve static files
 	router.Use(static.Serve("/", static.LocalFile("./build", true)))
@@ -62,22 +70,8 @@ func Server() {
 	}
 
 	// start server
-	go func() {
-		if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalln(err)
-		}
-	}()
-
-	// graceful shutdown
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Println("Shutdown Server ...")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := server.Shutdown(ctx); err != nil {
+	if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalln(err)
 	}
-	log.Println("Server exiting")
+	log.Println("Server stopped. asdfasdfasdfadsf")
 }

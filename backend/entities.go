@@ -1,36 +1,31 @@
 package backend
 
-// Product data
-type Product struct {
-	Id          int     `json:"id"`
-	Name        string  `json:"name"`
-	Category    string  `json:"category"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price"`
+import "gorm.io/gorm"
+
+type ListItem struct {
+	gorm.Model
+	Title string
 }
 
-// Order data
-type Order struct {
-	Lines []Line `json:"lines"`
+type ListItemDto struct {
+	Id    uint   `json:"id"`
+	Title string `json:"title"`
 }
 
-// Line data in an order
-type Line struct {
-	ProductId   int    `json:"productId"`
-	ProductName string `json:"productName"`
-	Quantity    int    `json:"quantity"`
+type Tag struct {
+	gorm.Model
+	Name string
 }
 
-// Result data
-type Result struct {
-	Id int `json:"id"`
+type ListItemFact struct {
+	gorm.Model
+	ListItemID uint
+	FactType   uint
+	Fact       string
 }
 
-type Film struct {
-	Id       int    `json:"id"`
-	Title    string `json:"title"`
-	Year     int    `json:"year"`
-	Genre    string `json:"genre"`
-	Director string `json:"director"`
-	Synopsis string `json:"synopsis"`
-}
+type FactType uint
+
+const (
+	FactTypeTag FactType = 1
+)
