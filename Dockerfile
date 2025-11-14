@@ -36,7 +36,7 @@ FROM alpine as deployment
 
 WORKDIR /app
 
-COPY db /app/db
+COPY data /app/data
 COPY --from=app-builder /app/build /app/build
 COPY --from=server-builder /app/main /app
 
