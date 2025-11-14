@@ -3,7 +3,8 @@ import type { Item } from "$lib/type/entities";
 const apiBase = "http://127.0.0.1:8080/api";
 
 const api = {
-    itemsPath: `${apiBase}/items`
+    itemsPath: `${apiBase}/items`,
+    tagsPath: `${apiBase}/tags`
 };
 
 export const addItem = async (itemName: string): Promise<void> => {
@@ -13,7 +14,21 @@ export const addItem = async (itemName: string): Promise<void> => {
             headers: {
                 'content-type': 'application/json; charset=UTF-8'
             },
-            body: JSON.stringify({ name: itemName })
+            body: JSON.stringify({ title: itemName })
+        });    
+    } catch {
+        console.error("Failed to add item");
+    }
+};
+
+export const addTag = async (tagName: string): Promise<void> => {
+    try {
+        await fetch(api.tagsPath, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({ name: tagName })
         });    
     } catch {
         console.error("Failed to add item");

@@ -17,6 +17,11 @@ type Tag struct {
 	Name string
 }
 
+type TagDto struct {
+	Id   uint   `json:"id"`
+	Name string `json:"name"`
+}
+
 type ListItemFact struct {
 	gorm.Model
 	ListItemID uint

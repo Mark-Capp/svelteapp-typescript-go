@@ -45,7 +45,8 @@ func Server() {
 	api.GET("/items", ListItems(db))
 	api.POST("/items", AddItem(db))
 
-	api.GET("/tags", Tags)
+	api.GET("/tags", GetTags(db))
+	api.POST("/tags", AddTag(db))
 
 	// serve static files
 	router.Use(static.Serve("/", static.LocalFile("./build", true)))
@@ -73,5 +74,5 @@ func Server() {
 	if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalln(err)
 	}
-	log.Println("Server stopped. asdfasdfasdfadsf")
+	log.Println("Server stopped. ")
 }

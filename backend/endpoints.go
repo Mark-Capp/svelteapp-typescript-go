@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,6 @@ func ListItems(db *gorm.DB) func(c *gin.Context) {
 
 		dtoList := make([]ListItemDto, len(items))
 		for i, item := range items {
-			log.Println("got asdfadf", item)
 			dtoList[i] = ListItemDto{
 				Id:    item.ID,
 				Title: item.Title,
@@ -30,12 +29,47 @@ func ListItems(db *gorm.DB) func(c *gin.Context) {
 	}
 }
 
-func Tags(c *gin.Context) {
-	// return JSON
-	c.JSON(http.StatusOK, []string{"tag1", "tag2", "tag3", "tag4"})
+func GetTags(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		tags := []Tag{}
+		result := db.Find(&tags)
+		if result.Error != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+			return
+		}
+
+		dtoList := make([]TagDto, len(tags))
+		for i, item := range tags {
+			dtoList[i] = TagDto{
+				Id:   item.ID,
+				Name: item.Name,
+			}
+		}
+
+		c.JSON(http.StatusOK, dtoList)
+	}
 }
 
 func AddItem(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		var json struct {
+			Title string `json:"title" binding:"required"`
+		}
+
+		if err := c.ShouldBindJSON(&json); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		item := ListItem{Title: json.Title}
+		db.Create(&item)
+		// Here you would typically add the item to the database
+		// For demonstration, we just return the received item
+		c.JSON(http.StatusCreated, gin.H{})
+	}
+}
+
+func AddTag(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var json struct {
 			Name string `json:"name" binding:"required"`
@@ -46,11 +80,10 @@ func AddItem(db *gorm.DB) func(c *gin.Context) {
 			return
 		}
 
-		item := ListItem{Title: json.Name}
+		fmt.Println("Adding tag:", json.Name)
+
+		item := Tag{Name: json.Name}
 		db.Create(&item)
-
-		log.Println("added", item)
-
 		// Here you would typically add the item to the database
 		// For demonstration, we just return the received item
 		c.JSON(http.StatusCreated, gin.H{})
